@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.github.faisalhussain95"
-version = "0.0.2"
+version = "0.0.3"
 
 repositories {
     mavenCentral()
@@ -33,6 +33,12 @@ tasks {
         untilBuild.set("253.*")
         version.set(project.version.toString())
         changeNotes.set("""
+            <h3>0.0.3</h3>
+            <ul>
+                <li>Fixed: Images now save to the actual project directory instead of IDE cache folder</li>
+                <li>Fixed: Added VFS refresh to make images immediately visible in project explorer</li>
+                <li>Improved: Better support for remote development environments (WSL, Remote SSH, Dev Containers)</li>
+            </ul>
             <h3>0.0.2</h3>
             <ul>
                 <li>Extended plugin compatibility to support builds up to 253.* (2025.3.x)</li>

@@ -20,7 +20,8 @@ class PasteImageAction : AnAction() {
             return
         }
 
-        val projectPath = project.basePath ?: run {
+        // Use the virtual file system path instead of basePath for remote/WSL support
+        val projectPath = project.baseDir?.path ?: project.basePath ?: run {
             showNotification(project, "No project path found", NotificationType.ERROR)
             return
         }
@@ -87,6 +88,9 @@ class PasteImageAction : AnAction() {
 
         // Get relative path
         val relativePath = ImageManager.getRelativePath(projectPath, imageFile.absolutePath)
+
+        // Refresh the project file system to make the new file visible
+        project.baseDir?.refresh(false, true)
 
         // Insert path into terminal (or copy to clipboard)
         insertPathInTerminal(project, relativePath)
