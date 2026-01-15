@@ -10,7 +10,6 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindowManager
-import org.jetbrains.plugins.terminal.TerminalToolWindowManager
 import java.io.File
 
 class PasteImageAction : AnAction() {
@@ -89,15 +88,8 @@ class PasteImageAction : AnAction() {
         // Get relative path
         val relativePath = ImageManager.getRelativePath(projectPath, imageFile.absolutePath)
 
-        // Insert path into terminal
+        // Insert path into terminal (or copy to clipboard)
         insertPathInTerminal(project, relativePath)
-
-        // Show success notification
-        showNotification(
-            project,
-            "Image saved and path inserted: $relativePath",
-            NotificationType.INFORMATION
-        )
     }
 
     private fun insertPathInTerminal(project: Project, path: String) {
@@ -106,45 +98,30 @@ class PasteImageAction : AnAction() {
             val terminalWindow = ToolWindowManager.getInstance(project).getToolWindow("Terminal")
             
             if (terminalWindow == null) {
-                showNotification(project, "Terminal tool window not found", NotificationType.WARNING)
+                showNotification(project, "Terminal tool window not found. Path: $path", NotificationType.WARNING)
                 return
             }
 
-            // Get the terminal manager
-            val terminalManager = TerminalToolWindowManager.getInstance(project)
+            // For now, we'll use a simpler approach: copy to clipboard and show notification
+            // The JetBrains Terminal API is complex and varies between versions
+            // This approach is more reliable across different IDE versions
+            val clipboard = java.awt.Toolkit.getDefaultToolkit().systemClipboard
+            val stringSelection = java.awt.datatransfer.StringSelection(path)
+            clipboard.setContents(stringSelection, null)
             
-            // Get the currently selected content (active terminal)
-            val content = terminalWindow.contentManager.selectedContent
-            if (content != null) {
-                // Try to execute the command in the terminal
-                // This will type the path into the active terminal session
-                val terminalWidget = terminalManager.getTerminalWidget(content)
-                if (terminalWidget != null) {
-                    // Type the path without executing (no newline)
-                    terminalWidget.terminalTextBuffer.typeString(path)
-                } else {
-                    // Fallback: just show the path
-                    showNotification(
-                        project,
-                        "Could not insert into terminal. Path: $path",
-                        NotificationType.INFORMATION
-                    )
-                }
-            } else {
-                showNotification(
-                    project,
-                    "No active terminal session. Path: $path",
-                    NotificationType.INFORMATION
-                )
-            }
-        } catch (e: Exception) {
-            // If terminal insertion fails, still provide the path to user
             showNotification(
                 project,
-                "Terminal insertion failed. Path copied: $path",
-                NotificationType.WARNING
+                "Image saved! Path copied to clipboard: $path (Paste with Ctrl+V / Cmd+V)",
+                NotificationType.INFORMATION
             )
-            println("Terminal insertion error: ${e.message}")
+        } catch (e: Exception) {
+            // If clipboard copy fails, still show the path to user
+            showNotification(
+                project,
+                "Image saved to: $path",
+                NotificationType.INFORMATION
+            )
+            println("Clipboard copy error: ${e.message}")
             e.printStackTrace()
         }
     }
