@@ -61,7 +61,6 @@ object ClipboardUtils {
             .toString()
             .replace(":", "-")
             .replace(".", "-")
-            .substringBefore('.')
         return "pasted-image-$timestamp.png"
     }
 }

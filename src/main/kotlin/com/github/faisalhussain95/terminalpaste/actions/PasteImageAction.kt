@@ -113,9 +113,6 @@ class PasteImageAction : AnAction() {
             // Get the terminal manager
             val terminalManager = TerminalToolWindowManager.getInstance(project)
             
-            // Try to get the active terminal widget
-            val shellTerminalWidget = terminalManager.createLocalShellWidget(project.basePath, "paste-image", false, false)
-            
             // Get the currently selected content (active terminal)
             val content = terminalWindow.contentManager.selectedContent
             if (content != null) {
