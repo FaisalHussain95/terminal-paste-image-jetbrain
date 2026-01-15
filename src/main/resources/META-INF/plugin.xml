@@ -1,0 +1,61 @@
+<idea-plugin>
+    <id>com.github.faisalhussain95.terminal-paste-image-jetbrains</id>
+    <name>Terminal Paste Image</name>
+    <vendor email="faisalhussain95@outlook.com" url="https://github.com/FaisalHussain95">Faisal Hussain</vendor>
+
+    <description><![CDATA[
+        <p>Seamlessly paste clipboard images directly into your terminal, automatically saving them to your project and inserting the file path.</p>
+        
+        <h3>Features</h3>
+        <ul>
+            <li><strong>Zero Configuration Required</strong> - Works out of the box across all platforms</li>
+            <li><strong>Cross-Platform Support</strong> - Windows, macOS, Linux, and WSL/WSL2 compatible</li>
+            <li><strong>Smart Clipboard Detection</strong> - Automatically detects when images are in your clipboard</li>
+            <li><strong>Automatic File Management</strong> - Saves images to configurable folder (default: .cp-images/) with timestamps</li>
+            <li><strong>Instant Path Insertion</strong> - Immediately inserts the relative path into your active terminal</li>
+            <li><strong>Keyboard Shortcut</strong> - Quick Ctrl+Alt+V (Windows/Linux) or Cmd+Alt+V (macOS)</li>
+            <li><strong>Smart Git Integration</strong> - Automatically adds images folder to .gitignore (configurable)</li>
+            <li><strong>Customizable Folder Name</strong> - Configure where images are saved</li>
+            <li><strong>Automatic Cleanup</strong> - Keeps only recent images (default: 10) to prevent folder bloat</li>
+        </ul>
+        
+        <h3>Usage</h3>
+        <ol>
+            <li>Copy an image to your clipboard (screenshot, image file, etc.)</li>
+            <li>Focus on any terminal in your IDE</li>
+            <li>Press Ctrl+Alt+V (Windows/Linux) or Cmd+Alt+V (macOS)</li>
+            <li>The image is saved and path is inserted in terminal</li>
+        </ol>
+        
+        <h3>Perfect for Claude Code Integration</h3>
+        <p>Ideal for sharing screenshots, diagrams, or images with Claude Code AI assistant directly from your terminal.</p>
+    ]]></description>
+
+    <!-- Product and plugin compatibility requirements.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>org.jetbrains.plugins.terminal</depends>
+
+    <!-- Extension points defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationService serviceImplementation="com.github.faisalhussain95.terminalpaste.settings.PasteImageSettings"/>
+        <applicationConfigurable 
+            parentId="tools"
+            instance="com.github.faisalhussain95.terminalpaste.settings.PasteImageConfigurable"
+            id="com.github.faisalhussain95.terminalpaste.settings.PasteImageConfigurable"
+            displayName="Terminal Paste Image"/>
+        <notificationGroup id="Terminal Paste Image" displayType="BALLOON"/>
+    </extensions>
+
+    <actions>
+        <action id="com.github.faisalhussain95.terminalpaste.PasteImage"
+                class="com.github.faisalhussain95.terminalpaste.actions.PasteImageAction"
+                text="Paste Image to Terminal"
+                description="Paste clipboard image to terminal with automatic file saving">
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt V"/>
+            <keyboard-shortcut keymap="Mac OS X" first-keystroke="meta alt V"/>
+            <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="meta alt V"/>
+        </action>
+    </actions>
+</idea-plugin>

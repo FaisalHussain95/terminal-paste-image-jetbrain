@@ -1,0 +1,102 @@
+name: Create Release
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build plugin
+        run: ./gradlew buildPlugin
+
+      - name: Get version from gradle.properties
+        id: get_version
+        run: |
+          VERSION=$(grep "^pluginVersion" gradle.properties | cut -d'=' -f2 | tr -d ' ')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Version: $VERSION"
+
+      - name: Get plugin name
+        id: get_name
+        run: |
+          NAME=$(grep "^pluginName" gradle.properties | cut -d'=' -f2 | tr -d ' ')
+          echo "name=$NAME" >> $GITHUB_OUTPUT
+          echo "Plugin Name: $NAME"
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.get_version.outputs.version }}
+          release_name: Release v${{ steps.get_version.outputs.version }}
+          body: |
+            ## Terminal Paste Image for JetBrains IDEs v${{ steps.get_version.outputs.version }}
+            
+            ### Installation
+            1. Download the plugin ZIP below
+            2. Open your JetBrains IDE (IntelliJ IDEA, PyCharm, WebStorm, etc.)
+            3. Go to Settings/Preferences → Plugins
+            4. Click the gear icon → Install Plugin from Disk
+            5. Select the downloaded ZIP file
+            6. Restart your IDE
+            
+            ### Features
+            - Paste clipboard images directly into terminal
+            - Cross-platform support (Windows, macOS, Linux)
+            - Automatic image saving with timestamps
+            - Configurable folder name (default: `.cp-images`)
+            - Auto .gitignore management
+            - Automatic cleanup of old images
+            - Keyboard shortcut: Ctrl+Alt+V (Cmd+Alt+V on macOS)
+            
+            ### Compatibility
+            - Requires JetBrains IDE 2023.3 or higher
+            - Works in all JetBrains IDEs
+            
+            See [README.md](https://github.com/${{ github.repository }}/blob/main/README.md) for more details.
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./build/distributions/${{ steps.get_name.outputs.name }}-${{ steps.get_version.outputs.version }}.zip
+          asset_name: ${{ steps.get_name.outputs.name }}-${{ steps.get_version.outputs.version }}.zip
+          asset_content_type: application/zip
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: plugin-${{ steps.get_version.outputs.version }}
+          path: build/distributions/*.zip
+          retention-days: 30

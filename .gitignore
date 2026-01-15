@@ -2,9 +2,17 @@
 out/
 dist/
 *.vsix
+build/
+.gradle/
 
 # Node modules
 node_modules/
+
+# IntelliJ Platform Plugin specific
+.idea/
+*.iml
+*.iws
+*.ipr
 
 # Logs
 npm-debug.log*

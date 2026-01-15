@@ -1,10 +1,12 @@
-# Terminal Paste Image
+# Terminal Paste Image for JetBrains IDEs
 
 ![Demo](assets/demo.gif)
 
-A VS Code extension that seamlessly pastes clipboard images directly into your terminal, automatically saving them to your project and inserting the file path. Perfect for Claude Code users and any workflow that requires quick image sharing in terminal environments.
+A JetBrains plugin that seamlessly pastes clipboard images directly into your terminal, automatically saving them to your project and inserting the file path. Perfect for Claude Code users and any workflow that requires quick image sharing in terminal environments.
 
-**⭐ If this extension saves you time and makes your workflow smoother, please consider starring the repository! Your support means the world to us and helps the project grow. ⭐**
+**Compatible with IntelliJ IDEA, PyCharm, WebStorm, GoLand, and all JetBrains IDEs**
+
+**⭐ If this plugin saves you time and makes your workflow smoother, please consider starring the repository! Your support means the world to us and helps the project grow. ⭐**
 
 ## ☕ Support
 
@@ -32,10 +34,11 @@ If this extension helps you, consider supporting the development:
 
 ## 📋 Prerequisites
 
-- Visual Studio Code 1.74.0 or higher
-- For Windows/WSL: PowerShell (included by default)
-- For macOS: `pngpaste` utility (install via `brew install pngpaste`)
-- For Linux: `xclip` utility (install via your package manager)
+- JetBrains IDE (IntelliJ IDEA, PyCharm, WebStorm, GoLand, etc.) version 2023.3 or higher
+- Java 17 or higher (bundled with JetBrains IDEs)
+- For macOS: Images are handled natively by Java AWT
+- For Linux: Images are handled natively by Java AWT  
+- For Windows/WSL: Images are handled natively by Java AWT
 
 ## 🌟 Show Your Support
 
@@ -68,65 +71,41 @@ Perfect for sharing screenshots, diagrams, or images with Claude Code AI assista
 
 ## ⚙️ Installation
 
-### From VS Code Marketplace
-1. Open VS Code
-2. Go to Extensions (`Ctrl+Shift+X`)
+### From JetBrains Marketplace
+1. Open your JetBrains IDE (IntelliJ IDEA, PyCharm, etc.)
+2. Go to Settings/Preferences → Plugins
 3. Search for "Terminal Paste Image"
 4. Click "Install"
+5. Restart the IDE
 
-### From VSIX
-1. Download the latest `.vsix` file from releases
-2. Open VS Code
-3. Press `Ctrl+Shift+P` and type "Install from VSIX"
+### Manual Installation
+1. Download the latest plugin `.zip` file from releases
+2. Open Settings/Preferences → Plugins
+3. Click the gear icon → Install Plugin from Disk
 4. Select the downloaded file
+5. Restart the IDE
 
 
 ## 🔧 Usage
 
 ### Basic Usage
 1. Copy an image to your clipboard (screenshot, image file, etc.)
-2. Focus on any terminal in VS Code
+2. Focus on any terminal in your JetBrains IDE
 3. Press `Ctrl+Alt+V` (Windows/Linux) or `Cmd+Alt+V` (macOS)
 4. The image is saved to your configured folder and path is inserted in terminal
 
-### Command Palette
-- Open Command Palette (`Ctrl+Shift+P`)
+### Action Menu
+- Open Find Action (`Ctrl+Shift+A` or `Cmd+Shift+A`)
 - Type "Paste Image to Terminal"
-- Execute the command
-
-### Right-Click Context Menu
-The extension integrates with the command palette and keyboard shortcuts - no additional context menu items.
+- Execute the action
 
 
 ## 🛠️ Platform-Specific Setup
 
-### Windows
-- Works out of the box with PowerShell
+### All Platforms
+- Works out of the box with Java AWT (bundled with JetBrains IDEs)
 - No additional setup required
-
-### WSL/WSL2
-- Automatically detects WSL environment
-- Uses Windows PowerShell for clipboard operations
-- No additional configuration needed
-
-### macOS
-Install `pngpaste` for optimal performance:
-```bash
-brew install pngpaste
-```
-
-### Linux
-Install `xclip` for clipboard operations:
-```bash
-# Ubuntu/Debian
-sudo apt-get install xclip
-
-# Fedora/RHEL
-sudo dnf install xclip
-
-# Arch
-sudo pacman -S xclip
-```
+- Cross-platform clipboard handling is automatic
 
 
 ## 📁 File Organization
@@ -160,53 +139,41 @@ Path format inserted in terminal:
 
 ## ⚙️ Configuration
 
-The extension provides several configuration options that can be customized in VS Code settings:
+The plugin provides several configuration options that can be customized in your IDE settings:
 
 ### Settings
 
 | Setting | Type | Default | Description |
 |---------|------|---------|-------------|
-| `terminalPasteImage.folderName` | string | `.cp-images` | Name of the folder where pasted images will be saved |
-| `terminalPasteImage.autoGitIgnore` | boolean | `true` | Automatically add the images folder to .gitignore if not present |
-| `terminalPasteImage.maxImages` | number | `10` | Maximum number of images to keep (older images are automatically deleted) |
+| `Folder Name` | string | `.cp-images` | Name of the folder where pasted images will be saved |
+| `Automatically add folder to .gitignore` | boolean | `true` | Automatically add the images folder to .gitignore if not present |
+| `Maximum Images` | number | `10` | Maximum number of images to keep (older images are automatically deleted) |
 
 ### Accessing Settings
 
-1. Open VS Code Settings (`Ctrl+,` or `Cmd+,`)
-2. Search for "Terminal Paste Image"
+1. Open Settings/Preferences (`Ctrl+Alt+S` or `Cmd+,`)
+2. Navigate to Tools → Terminal Paste Image
 3. Modify the settings as needed
 
 ### Auto .gitignore Management
 
-By default, the extension will:
-- Check if a `.gitignore` file exists in your workspace
+By default, the plugin will:
+- Check if a `.gitignore` file exists in your project
 - Verify if your images folder is already ignored
 - Automatically add the folder to `.gitignore` if not present
 - Add a helpful comment indicating it's for Terminal Paste Image
 
-This behavior can be disabled by setting `terminalPasteImage.autoGitIgnore` to `false`.
+This behavior can be disabled in the plugin settings.
 
 ### Custom Folder Configuration
 
-You can change the default folder name from `.cp-images` to any folder name you prefer:
+You can change the default folder name from `.cp-images` to any folder name you prefer in the plugin settings (Tools → Terminal Paste Image).
 
-```json
-{
-  "terminalPasteImage.folderName": "screenshots"
-}
-```
-
-The folder will be created relative to your workspace root.
+The folder will be created relative to your project root.
 
 ### Image Management
 
-By default, the extension keeps only the 10 most recent images to prevent folder bloat:
-
-```json
-{
-  "terminalPasteImage.maxImages": 10
-}
-```
+By default, the plugin keeps only the 10 most recent images to prevent folder bloat. You can adjust this in the plugin settings:
 
 - When you paste a new image, older images beyond the limit are automatically deleted
 - Images are sorted by modification time (newest kept, oldest deleted)
@@ -220,10 +187,20 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 
 ### Development Setup
 1. Clone this repository
-2. Run `npm install`
-3. Open in VS Code
-4. Press `F5` to launch extension development host
-5. Test your changes
+2. Open in IntelliJ IDEA
+3. The project uses Gradle, dependencies will be downloaded automatically
+4. Run the plugin: Use "Run Plugin" from the Gradle tasks or press Shift+F10
+5. Test your changes in the IDE development instance
+
+### Building
+```bash
+./gradlew build
+```
+
+### Running
+```bash
+./gradlew runIde
+```
 
 
 ## 📝 Changelog
@@ -244,9 +221,8 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 
 ## 🐛 Known Issues
 
-- macOS requires `pngpaste` utility for best experience
-- Linux requires `xclip` for clipboard operations
-- Some image formats may need conversion to PNG
+- Terminal text insertion may vary based on IDE version and terminal type
+- Some terminal emulators may require manual path entry
 
 ## 📄 License
 
@@ -256,7 +232,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 💬 Connect
 
-- 🐙 **GitHub**: [@doonfrs](https://github.com/doonfrs)
-- ☕ **Support**: [Buy me a coffee](https://buymeacoffee.com/doonfrs)
+- 🐙 **GitHub**: [@FaisalHussain95](https://github.com/FaisalHussain95)
+- 📦 **Original VSCode Extension**: [@doonfrs](https://github.com/doonfrs)
 
-**Made with ❤️ for the VS Code and Claude Code community**
+**Made with ❤️ for the JetBrains and Claude Code community**
