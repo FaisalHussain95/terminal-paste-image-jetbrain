@@ -146,7 +146,7 @@ Options:
 ## Compatibility
 
 - **Minimum IDE Version**: 2023.3 (Build 233)
-- **Maximum IDE Version**: 243.* (2024.3.x)
+- **Maximum IDE Version**: 253.* (2025.3.x)
 - **Supported IDEs**: All JetBrains IDEs (IntelliJ IDEA, PyCharm, WebStorm, GoLand, etc.)
 
 ## Publishing to JetBrains Marketplace
