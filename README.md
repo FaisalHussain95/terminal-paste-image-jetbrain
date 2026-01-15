@@ -218,6 +218,9 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 - Automatic image cleanup (keeps last 10 images by default)
 - Configurable maximum image count (1-100)
 
+### v0.0.2
+- Extended plugin compatibility to support builds up to 253.* (2025.3.x)
+- Updated maximum IDE version from 243.* to 253.* to support newer JetBrains IDE versions including WebStorm 2025.3
 
 ## 🐛 Known Issues
 

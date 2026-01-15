@@ -18,15 +18,15 @@ This directory contains automated workflows for the Terminal Paste Image JetBrai
 **Usage**:
 When you merge a PR to `main`, this workflow will automatically:
 1. Build the plugin
-2. Create a release named `v{version}` (e.g., `v0.0.1`)
+2. Create a release named `v{version}` (e.g., `v0.0.2`)
 3. Attach the plugin ZIP file to the release
 4. Make it available for download
 
 **Manual Release**:
 You can also trigger a release manually by creating and pushing a tag:
 ```bash
-git tag v0.0.1
-git push origin v0.0.1
+git tag v0.0.2
+git push origin v0.0.2
 ```
 
 ### 2. Build and Test Workflow (`build.yml`)

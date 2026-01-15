@@ -24,7 +24,7 @@ Your Terminal Paste Image extension has been successfully converted from VSCode 
 gradlew.bat build
 ```
 
-The plugin ZIP will be in `build/distributions/terminal-paste-image-jetbrains-0.0.1.zip`
+The plugin ZIP will be in `build/distributions/terminal-paste-image-jetbrains-0.0.2.zip`
 
 ### 2. Test in Development Mode
 

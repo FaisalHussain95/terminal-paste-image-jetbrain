@@ -98,7 +98,7 @@ After testing, configure the plugin:
 
 After building, find the plugin ZIP here:
 ```
-build/distributions/terminal-paste-image-jetbrains-0.0.1.zip
+build/distributions/terminal-paste-image-jetbrains-0.0.2.zip
 ```
 
 ## 🐛 Troubleshooting

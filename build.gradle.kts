@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.github.faisalhussain95"
-version = "0.0.1"
+version = "0.0.2"
 
 repositories {
     mavenCentral()
@@ -33,6 +33,11 @@ tasks {
         untilBuild.set("253.*")
         version.set(project.version.toString())
         changeNotes.set("""
+            <h3>0.0.2</h3>
+            <ul>
+                <li>Extended plugin compatibility to support builds up to 253.* (2025.3.x)</li>
+                <li>Updated maximum IDE version to support newer JetBrains IDE versions including WebStorm 2025.3</li>
+            </ul>
             <h3>0.0.1</h3>
             <ul>
                 <li>Initial release</li>
